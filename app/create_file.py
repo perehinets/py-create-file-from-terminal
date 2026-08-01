@@ -1,17 +1,17 @@
 import sys
 import os
 from datetime import datetime
-from pathlib import Path
 
 
 def get_dir_name() -> list:
-    if "-f" in sys.argv:
-        if sys.argv.index("-f") > sys.argv.index("-d"):
-            return sys.argv[sys.argv.index("-d") + 1 : sys.argv.index("-f")]
+    args = sys.argv[1:]
+    if "-f" in args:
+        if args.index("-f") > args.index("-d"):
+            return args[args.index("-d") + 1 : args.index("-f")]
         else:
-            return sys.argv[sys.argv.index("-d") + 1:]
+            return args[args.index("-d") + 1:]
     else:
-        return sys.argv[sys.argv.index("-d") + 1:]
+        return args[args.index("-d") + 1:]
 
 
 def create_dir(directories: list) -> None:
@@ -21,7 +21,7 @@ def create_dir(directories: list) -> None:
 
 def file_entry(file_path: str) -> None:
     lines = []
-    if file_path.is_file():
+    if os.path.isfile(file_path):
         method = "a"
         lines.append("\n")
     else:
@@ -44,13 +44,14 @@ if "-d" in sys.argv and "-f" not in sys.argv:
     create_dir(directories)
 
 if "-f" in sys.argv and "-d" not in sys.argv:
-    file_name = sys.argv[sys.argv.index("-f") + 1]
-    file_path = Path(os.path.join(os.getcwd(), file_name))
-    file_entry(file_path)
+    if sys.argv[sys.argv.index("-f") + 1]:
+        file_name = sys.argv[sys.argv.index("-f") + 1]
+        file_path = os.path.join(os.getcwd(), file_name)
+        file_entry(file_path)
 
 if "-d" in sys.argv and "-f" in sys.argv:
     directories = get_dir_name()
     file_name = sys.argv[sys.argv.index("-f") + 1]
     create_dir(directories)
-    file_path = Path(os.path.join(*directories, file_name))
+    file_path = os.path.join(*directories, file_name)
     file_entry(file_path)
