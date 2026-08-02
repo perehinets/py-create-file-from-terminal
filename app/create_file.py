@@ -5,13 +5,15 @@ from datetime import datetime
 
 def get_dir_name() -> list:
     args = sys.argv[1:]
-    if "-f" in args:
+    if "-f" in args and "-d" in args:
         if args.index("-f") > args.index("-d"):
             return args[args.index("-d") + 1 : args.index("-f")]
         else:
             return args[args.index("-d") + 1:]
     else:
-        return args[args.index("-d") + 1:]
+        if "-d" in args:
+            return args[args.index("-d") + 1:]
+        return []
 
 
 def create_dir(directories: list) -> None:
