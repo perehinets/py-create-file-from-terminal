@@ -44,7 +44,7 @@ if "-d" in sys.argv and "-f" not in sys.argv:
     create_dir(directories)
 
 if "-f" in sys.argv and "-d" not in sys.argv:
-    if sys.argv[sys.argv.index("-f") + 1]:
+    if sys.argv.index("-f") != len(sys.argv) - 1:
         file_name = sys.argv[sys.argv.index("-f") + 1]
         file_path = os.path.join(os.getcwd(), file_name)
         file_entry(file_path)
